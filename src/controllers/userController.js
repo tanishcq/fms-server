@@ -85,7 +85,7 @@ const signin = async (req, res) => {
         const existingUser = await userModel.findOne({ email: email })
         if(!existingUser) {
             if (email == "" || !email) {
-                res.status(400).json({
+                res.status(401).json({
                 status: "FAILED",
                 message: "Empty fields are unacceptable!",
             });
@@ -96,24 +96,25 @@ const signin = async (req, res) => {
                 });
             } 
             else {
-                let username = email.split("@")[0];
-                try {
-                    // user creation
-                    const result = await userModel.create({
-                        username,
-                        email
-                    })
+//                 let username = email.split("@")[0];
+//                 try {
+//                     // user creation
+//                     const result = await userModel.create({
+//                         username,
+//                         email
+//                     })
             
-                    // generate token
-                    const token = jwt.sign({ email: result.email, id: result._id }, SECRET_KEY);
+//                     // generate token
+//                     const token = jwt.sign({ email: result.email, id: result._id }, SECRET_KEY);
             
-                    // send response 
-                     return res.status(201).json({ user: result, token });
-                } catch (err) {
-                    return res.status(500).json({ message: `Something went wrong! ${err}` });
-                }
+//                     // send response 
+//                      return res.status(201).json({ user: result, token });
+//                 } catch (err) {
+//                     return res.status(500).json({ message: `Something went wrong! ${err}` });
+//                 }
+                return res.status(403).json({ message: "Unauthorized Access!" });
             }
-            // return res.status(404).json({ message: "User doesn't exist!" });
+            
         }
 
         // hash and compare passwords
